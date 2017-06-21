@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import Tesseract from 'tesseract.js'
 
-export default class OcrReader extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Hello World!</h1>
-      </div>
-    )
-  }
+const OcrReader = (image) => {
+  console.log('heyy from ocr land')
+  Tesseract.recognize(image)
+    .progress(p => console.log(p))
+    .catch(err => console.log(err))
+    .then(result => console.log(result))
 }
+
+export default OcrReader
