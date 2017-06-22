@@ -1,0 +1,23 @@
+{
+  "name": "ocr-reader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuelchristopher/ocr-reader.git"
+  },
+  "author": "Samuel Paul Christopher <thesamchris@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samuelchristopher/ocr-reader/issues"
+  },
+  "homepage": "https://github.com/samuelchristopher/ocr-reader#readme",
+  "dependencies": {
+    "http-server": "^0.10.0"
+  }
+}

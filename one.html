@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>OCR Test</title>
+  </head>
+  <body>
+    <img id="wonb" src="./imgs/white-on-black.png" alt="white-on-black">
+    <img id="bonw" src="./imgs/black-on-white.png" alt="black-on-white">
+  </body>
+  <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+  <script src="http://cdn.rawgit.com/antimatter15/ocrad.js/master/ocrad.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    let wOnB = document.getElementById('wonb')
+    let bOnW = document.getElementById('bonw')
+    console.log('recognising...')
+    OCRAD(wOnB, results => console.log('OCRAD: white on black results', results))
+    Tesseract.recognize(wOnB)
+      .then(results =>  console.log('Tesseract: white on black results', results))
+    OCRAD(bOnW, results => console.log('OCRAD: black on white results', results))
+    Tesseract.recognize(bOnW)
+      .then(results =>  console.log('Tesseract: black on white results', results))
+  </script>
+</html>
+
+<!-- CONCLUSION: Tesseract is more reliable at recognising the numbers -->
