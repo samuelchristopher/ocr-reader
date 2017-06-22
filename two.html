@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Image Slicing</title>
+  </head>
+  <body>
+    <img id="black" src="./imgs/black-on-white.png" alt="black-on-white">
+    <canvas id="canvas"></canvas>
+    <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+  </body>
+  <script type="text/javascript">
+    let source = document.querySelector('#black')
+    let dest = document.getElementById('canvas')
+    let ctx = dest.getContext('2d')
+    dest.width = source.naturalWidth
+    dest.height = source.naturalHeight
+    // main number
+    ctx.drawImage(source, 70, 210, 220, 124, 21, 20, 220, 104)
+    Tesseract.recognize(dest)
+      .then(re => console.log(re))
+  </script>
+</html>
