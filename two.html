@@ -5,19 +5,72 @@
     <title>Image Slicing</title>
   </head>
   <body>
+    <p>Here is what I see:
+      <span class="main-number"></span>
+      <span class="first-counter"></span>
+      <span class="second-counter"></span>
+      <span class="third-counter"></span>
+    </p>
     <img id="black" src="./imgs/black-on-white.png" alt="black-on-white">
-    <canvas id="canvas"></canvas>
+    <img id="white" src="./imgs/white-on-black.png" alt="black-on-white">
+    <canvas id="main-number"></canvas>
+    <canvas id="first-counter"></canvas>
+    <canvas id="second-counter"></canvas>
+    <canvas id="third-counter"></canvas>
     <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
   </body>
   <script type="text/javascript">
-    let source = document.querySelector('#black')
-    let dest = document.getElementById('canvas')
-    let ctx = dest.getContext('2d')
-    dest.width = source.naturalWidth
-    dest.height = source.naturalHeight
+    let data = {}
+    let source = document.getElementById('black')
+    let altSource = document.getElementById('white')
+    const renderOutput = (className, data, message) => {
+      let loc = document.querySelector(`.${className}`)
+      return loc.innerHTML = `${message} ${data.text}`
+    }
     // main number
-    ctx.drawImage(source, 70, 210, 220, 124, 21, 20, 220, 104)
-    Tesseract.recognize(dest)
-      .then(re => console.log(re))
+    let mainNumber = document.getElementById('main-number')
+    let mainNumberCtx = mainNumber.getContext('2d')
+    mainNumber.width = source.naturalWidth
+    mainNumber.height = source.naturalHeight
+    mainNumberCtx.drawImage(source, 70, 210, 220, 124, 21, 20, 220, 104)
+    Tesseract.recognize(mainNumber)
+      .then(re => renderOutput('main-number', re, 'Main number is'))
+
+    // first counter
+    let firstCounter = document.getElementById('first-counter')
+    let firstCounterCtx = firstCounter.getContext('2d')
+    firstCounter.width = source.naturalWidth
+    firstCounter.height = source.naturalHeight
+    // with the word counter
+    firstCounterCtx.drawImage(source, 10, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // firstCounterCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(firstCounter)
+      .then(re => renderOutput('first-counter', re, 'First counter is'))
+
+    // second counter
+    let secondCounter = document.getElementById('second-counter')
+    let secondCounterCtx = secondCounter.getContext('2d')
+    secondCounter.width = source.naturalWidth
+    secondCounter.height = source.naturalHeight
+    // with the word counter
+    secondCounterCtx.drawImage(source, 200, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // secondCounterCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(secondCounter)
+      .then(re => renderOutput('second-counter', re, 'Second counter is'))
+
+    // third counter
+    let thirdCounter = document.getElementById('third-counter')
+    let thirdCounterCtx = thirdCounter.getContext('2d')
+    thirdCounter.width = source.naturalWidth
+    thirdCounter.height = source.naturalHeight
+    // with the word counter
+    thirdCounterCtx.drawImage(altSource, 400, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // thirdCounterCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(thirdCounter)
+      .then(re => renderOutput('third-counter', re, 'Third counter is'))
+
   </script>
 </html>
