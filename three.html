@@ -19,7 +19,6 @@
     <canvas id="copy"></canvas>
     <canvas id="main-number"></canvas>
   </body>
-  <script src="http://evanw.github.io/glfx.js/glfx.js" charset="utf-8"></script>
   <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
   <script type="text/javascript">
     // invert() grayscale(100%) brightness(2) contrast(1.2)
@@ -31,19 +30,91 @@
     copyCtx.filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
     copyCtx.drawImage(originalImage, 0, 0)
 
-    // // recognize
-    // let source = document.getElementById('copy')
-    // const renderOutput = (className, data, message, isObject = true) => {
-    //   let loc = document.querySelector(`.${className}`)
-    //   return isObject ? loc.innerHTML = `${message} ${data.text}` : loc.innerHTML = `${message} ${data}`
-    // }
-    //
-    // let mainNumber = document.createElement('canvas')
-    // let mainNumberCtx = mainNumber.getContext('2d')
-    // mainNumber.width = originalImage.naturalWidth
-    // mainNumber.height = originalImage.naturalHeight
-    // mainNumberCtx.drawImage(source, 70, 210, 220, 124, 21, 20, 220, 104)
-    // Tesseract.recognize(mainNumber)
-    //   .then(re => renderOutput('main-number', re, 'Main number is'))
+    // recognize
+    let source = document.getElementById('copy')
+    const renderOutput = (className, data, message, isObject = true) => {
+      let loc = document.querySelector(`.${className}`)
+      return isObject ? loc.innerHTML = `${message} ${data.text}` : loc.innerHTML = `${message} ${data}`
+    }
+
+    let mainNumber = document.createElement('canvas')
+    let mainNumberCtx = mainNumber.getContext('2d')
+    mainNumber.width = originalImage.naturalWidth
+    mainNumber.height = originalImage.naturalHeight
+    mainNumberCtx.drawImage(source, 70, 210, 220, 124, 21, 20, 220, 104)
+    Tesseract.recognize(mainNumber)
+      .then(re => renderOutput('main-number', re, 'Main number is'))
+
+    let mainCounter = document.createElement('canvas')
+    let mainCounterCtx = mainCounter.getContext('2d')
+    mainCounter.width = originalImage.naturalWidth
+    mainCounter.height = originalImage.naturalHeight
+    mainCounterCtx.drawImage(source, 390, 230, 200, 160, 21, 20, 150, 104)
+    Tesseract.recognize(mainCounter)
+      .then(re => renderOutput('main-counter', re, 'Main counter is'))
+
+    // first counter
+    let firstCounter = document.createElement('canvas')
+    let firstCounterCtx = firstCounter.getContext('2d')
+    firstCounter.width = originalImage.naturalWidth
+    firstCounter.height = originalImage.naturalHeight
+    // with the word counter
+    firstCounterCtx.drawImage(source, 10, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // firstCounterCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(firstCounter)
+      .then(re => {
+        let firstArray = re.text.split('')
+        let firstCounter = firstArray[firstArray.length - 3]
+        return renderOutput('first-counter', firstCounter, 'First counter is', false)
+      })
+
+    // second counter
+    let secondCounter = document.getElementById('main-number')
+    let secondCounterCtx = secondCounter.getContext('2d')
+    secondCounter.width = originalImage.naturalWidth
+    secondCounter.height = originalImage.naturalHeight
+    // with the word counter
+    secondCounterCtx.drawImage(source, 200, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // secondCounterCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(secondCounter)
+      .then(re => {
+        let secondArray = re.text.split('')
+        let secondCounter = secondArray[secondArray.length - 3]
+        return renderOutput('second-counter', secondCounter, 'Second counter is', false)
+      })
+
+    // third counter
+    let thirdCounter = document.createElement('canvas')
+    let thirdCounterCtx = thirdCounter.getContext('2d')
+    thirdCounter.width = originalImage.naturalWidth
+    thirdCounter.height = originalImage.naturalHeight
+    // with the word counter
+    thirdCounterCtx.drawImage(source, 390, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // thirdCounterCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(thirdCounter)
+      .then(re => renderOutput('third-counter', re, 'Third counter is'))
+
+    // top three numbers
+    let topThreeNumbers = document.createElement('canvas')
+    let topThreeNumbersCtx = topThreeNumbers.getContext('2d')
+    topThreeNumbers.width = originalImage.naturalWidth
+    topThreeNumbers.height = originalImage.naturalHeight
+    // with the word counter
+    // topThreeNumbersCtx.drawImage(source, source.naturalWidth - 10, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // topThreeNumbersCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(source)
+      .then(re => {
+        let threeNumbersArray = re.text.replace(/['"]+/g, '').slice(0, -3).split(' ')
+        let firstNumber = threeNumbersArray[0].slice(2, 5)
+        let secondNumber = threeNumbersArray[1].slice(0, -2)
+        let thirdNumber = threeNumbersArray[2].slice(0, -5)
+        renderOutput('first-number', firstNumber, 'First number is', false)
+        renderOutput('second-number', secondNumber, 'Second number is', false)
+        renderOutput('third-number', thirdNumber, 'Third number is', false)
+      })
   </script>
 </html>
