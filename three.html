@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Image Processing</title>
+  </head>
+  <body>
+    <ol>Here is what I see:
+      <li class="main-number"></li>
+      <li class="main-counter"></li>
+      <li class="first-number"></li>
+      <li class="first-counter"></li>
+      <li class="second-number"></li>
+      <li class="second-counter"></li>
+      <li class="third-number"></li>
+      <li class="third-counter"></li>
+    </ol>
+    <img id="original-image" src="./imgs/original.png" alt="priginal-one">
+    <canvas id="copy"></canvas>
+    <canvas id="main-number"></canvas>
+  </body>
+  <script src="http://evanw.github.io/glfx.js/glfx.js" charset="utf-8"></script>
+  <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+  <script type="text/javascript">
+    // invert() grayscale(100%) brightness(2) contrast(1.2)
+    let originalImage = document.getElementById('original-image')
+    let copy = document.getElementById('copy')
+    let copyCtx = copy.getContext('2d')
+    copy.width = originalImage.naturalWidth
+    copy.height = originalImage.naturalHeight
+    copyCtx.filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
+    copyCtx.drawImage(originalImage, 0, 0)
+
+    // // recognize
+    // let source = document.getElementById('copy')
+    // const renderOutput = (className, data, message, isObject = true) => {
+    //   let loc = document.querySelector(`.${className}`)
+    //   return isObject ? loc.innerHTML = `${message} ${data.text}` : loc.innerHTML = `${message} ${data}`
+    // }
+    //
+    // let mainNumber = document.createElement('canvas')
+    // let mainNumberCtx = mainNumber.getContext('2d')
+    // mainNumber.width = originalImage.naturalWidth
+    // mainNumber.height = originalImage.naturalHeight
+    // mainNumberCtx.drawImage(source, 70, 210, 220, 124, 21, 20, 220, 104)
+    // Tesseract.recognize(mainNumber)
+    //   .then(re => renderOutput('main-number', re, 'Main number is'))
+  </script>
+</html>
