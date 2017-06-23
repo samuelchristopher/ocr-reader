@@ -5,27 +5,34 @@
     <title>Image Slicing</title>
   </head>
   <body>
-    <p>Here is what I see:
-      <span class="main-number"></span>
-      <span class="first-counter"></span>
-      <span class="second-counter"></span>
-      <span class="third-counter"></span>
-    </p>
+    <ol>Here is what I see:
+      <li class="main-number"></li>
+      <li class="main-counter"></li>
+      <li class="first-number"></li>
+      <li class="first-counter"></li>
+      <li class="second-number"></li>
+      <li class="second-counter"></li>
+      <li class="third-number"></li>
+      <li class="third-counter"></li>
+    </ol>
     <img id="black" src="./imgs/black-on-white.png" alt="black-on-white">
     <img id="white" src="./imgs/white-on-black.png" alt="black-on-white">
     <canvas id="main-number"></canvas>
+    <canvas id="main-counter"></canvas>
+    <canvas id="top-three-numbers"></canvas>
     <canvas id="first-counter"></canvas>
     <canvas id="second-counter"></canvas>
     <canvas id="third-counter"></canvas>
     <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+    <script src="http://cdn.rawgit.com/antimatter15/ocrad.js/master/ocrad.js" charset="utf-8"></script>
   </body>
   <script type="text/javascript">
     let data = {}
     let source = document.getElementById('black')
     let altSource = document.getElementById('white')
-    const renderOutput = (className, data, message) => {
+    const renderOutput = (className, data, message, isObject = true) => {
       let loc = document.querySelector(`.${className}`)
-      return loc.innerHTML = `${message} ${data.text}`
+      return isObject ? loc.innerHTML = `${message} ${data.text}` : loc.innerHTML = `${message} ${data}`
     }
     // main number
     let mainNumber = document.getElementById('main-number')
@@ -35,6 +42,15 @@
     mainNumberCtx.drawImage(source, 70, 210, 220, 124, 21, 20, 220, 104)
     Tesseract.recognize(mainNumber)
       .then(re => renderOutput('main-number', re, 'Main number is'))
+    // main counter
+    let mainCounter = document.getElementById('main-counter')
+    let mainCounterCtx = mainCounter.getContext('2d')
+    mainCounter.width = source.naturalWidth
+    mainCounter.height = source.naturalHeight
+    mainCounterCtx.drawImage(source, 390, 230, 200, 160, 21, 20, 150, 104)
+    Tesseract.recognize(mainCounter)
+      .then(re => renderOutput('main-counter', re, 'Main counter is'))
+    OCRAD(mainCounter, re => console.log('main counter', re))
 
     // first counter
     let firstCounter = document.getElementById('first-counter')
@@ -66,11 +82,32 @@
     thirdCounter.width = source.naturalWidth
     thirdCounter.height = source.naturalHeight
     // with the word counter
-    thirdCounterCtx.drawImage(altSource, 400, 120, 160, 40, 10, 10, 150, 40)
+    thirdCounterCtx.drawImage(source, 390, 120, 160, 40, 10, 10, 150, 40)
     // w/o the word counter
     // thirdCounterCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
     Tesseract.recognize(thirdCounter)
       .then(re => renderOutput('third-counter', re, 'Third counter is'))
+    OCRAD(thirdCounter, re => console.log('third counter', re))
+
+    // top three numbers
+    let topThreeNumbers = document.getElementById('top-three-numbers')
+    let topThreeNumbersCtx = topThreeNumbers.getContext('2d')
+    topThreeNumbers.width = source.naturalWidth
+    topThreeNumbers.height = source.naturalHeight
+    // with the word counter
+    // topThreeNumbersCtx.drawImage(source, source.naturalWidth - 10, 120, 160, 40, 10, 10, 150, 40)
+    // w/o the word counter
+    // topThreeNumbersCtx.drawImage(source, 90, 120, 80, 60, 10, 10, 100, 100)
+    Tesseract.recognize(source)
+      .then(re => {
+        let threeNumbersArray = re.text.replace(/['"]+/g, '').slice(0, -3).split(' ')
+        let firstNumber = threeNumbersArray[0]
+        let secondNumber = threeNumbersArray[1]
+        let thirdNumber = threeNumbersArray[2]
+        renderOutput('first-number', firstNumber, 'First number is', false)
+        renderOutput('second-number', secondNumber, 'Second number is', false)
+        renderOutput('third-number', thirdNumber, 'Third number is', false)
+      })
 
   </script>
 </html>
