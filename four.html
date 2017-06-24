@@ -143,6 +143,7 @@
     <!-- <track-my-number></track-my-number> -->
     <!-- <current-picture></current-picture> -->
   </body>
+  <script src="https://cdn.rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.min.js" charset="utf-8"></script>
   <script type="text/javascript">
     // change numbers
     const changeNumbers = (state = 000, action) => {
@@ -161,12 +162,21 @@
     const inc = () => {
       let mainNumberElement = document.getElementById('main-number')
       let newNumber = changeNumbers(parseInt(mainNumberElement.innerHTML), { type: "INCREMENT_NUMBER"})
-      return mainNumberElement.innerHTML = newNumber
+      mainNumberElement.innerHTML = newNumber
+      return snap()
     }
     const dec = () => {
       let mainNumberElement = document.getElementById('main-number')
       let newNumber = changeNumbers(parseInt(mainNumberElement.innerHTML), { type: "DECREMENT_NUMBER"})
-      return mainNumberElement.innerHTML = newNumber
+      mainNumberElement.innerHTML = newNumber
+      return snap();
+    }
+
+    const snap = () => {
+      let qmsMonitor = document.querySelector('.qms-monitor')
+      html2canvas(qmsMonitor).then(canvas => {
+        
+      })
     }
 
   </script>
