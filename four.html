@@ -109,21 +109,21 @@
       <div class="qms-monitor__white-bar"></div>
       <div class="qms-monitor__secondary-number-container">
         <div class="secondary-number-container">
-          <h2 class="secondary-number-container__number">012</h2>
+          <h2 id="first-number" class="secondary-number-container__number">012</h2>
           <div class="secondary-number-container__counter-info">
             <h4 class="counter-info__text">counter</h4>
             <h3 class="counter-info__counter-number">3</h3>
           </div>
         </div>
         <div class="secondary-number-container">
-          <h2 class="secondary-number-container__number">001</h2>
+          <h2 id="second-number" class="secondary-number-container__number">001</h2>
           <div class="secondary-number-container__counter-info">
             <h4 class="counter-info__text">counter</h4>
             <h3 class="counter-info__counter-number">5</h3>
           </div>
         </div>
         <div class="secondary-number-container">
-          <h2 class="secondary-number-container__number">078</h2>
+          <h2 id="third-number" class="secondary-number-container__number">078</h2>
           <div class="secondary-number-container__counter-info">
             <h4 class="counter-info__text">counter</h4>
             <h3 class="counter-info__counter-number">6</h3>
@@ -131,17 +131,43 @@
         </div>
       </div>
       <div class="qms-monitor__main-number-container main-number-container">
-        <h1 class="main-number-container__main-number">1022</h1>
+        <h1 id="main-number" class="main-number-container__main-number">1022</h1>
         <div class="main-number-container__main-counter main-counter">
           <h3 class="main-counter__text">Counter</h3>
           <h1 class="main-counter__counter-number">3</h1>
         </div>
       </div>
     </div>
+    <button type="button" name="increment-number" onclick="inc()">+ 1</button>
+    <button type="button" name="decrement-number" onclick="dec()">- 1</button>
     <!-- <track-my-number></track-my-number> -->
     <!-- <current-picture></current-picture> -->
   </body>
   <script type="text/javascript">
+    // change numbers
+    const changeNumbers = (state = 000, action) => {
+      switch (action.type) {
+        case "INCREMENT_NUMBER":
+          return state + 1
+          break;
+        case "DECREMENT_NUMBER":
+          return state - 1
+          break;
+        default:
+
+      }
+    }
+
+    const inc = () => {
+      let mainNumberElement = document.getElementById('main-number')
+      let newNumber = changeNumbers(parseInt(mainNumberElement.innerHTML), { type: "INCREMENT_NUMBER"})
+      return mainNumberElement.innerHTML = newNumber
+    }
+    const dec = () => {
+      let mainNumberElement = document.getElementById('main-number')
+      let newNumber = changeNumbers(parseInt(mainNumberElement.innerHTML), { type: "DECREMENT_NUMBER"})
+      return mainNumberElement.innerHTML = newNumber
+    }
 
   </script>
 </html>
