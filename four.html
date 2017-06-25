@@ -6,6 +6,9 @@
   </head>
   <body>
     <style>
+      #output {
+        font-family: sans-serif;
+      }
       .qms-monitor {
         width: 558px;
         height: 392px;
@@ -105,6 +108,7 @@
       }
     </style>
     <!-- <qms-monitor></qms-monitor> -->
+    <h1 id="output">main number is ... (recognising)</h1>
     <div class="qms-monitor">
       <div class="qms-monitor__white-bar"></div>
       <div class="qms-monitor__secondary-number-container">
@@ -131,7 +135,7 @@
         </div>
       </div>
       <div class="qms-monitor__main-number-container main-number-container">
-        <h1 id="main-number" class="main-number-container__main-number">1022</h1>
+        <h1 id="main-number" class="main-number-container__main-number">002</h1>
         <div class="main-number-container__main-counter main-counter">
           <h3 class="main-counter__text">Counter</h3>
           <h1 class="main-counter__counter-number">3</h1>
@@ -147,15 +151,19 @@
     <!-- <current-picture></current-picture> -->
   </body>
   <script src="https://cdn.rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.min.js" charset="utf-8"></script>
+  <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
   <script type="text/javascript">
     // change numbers
     const changeNumbers = (state = 000, action) => {
+      let newNumber
       switch (action.type) {
         case "INCREMENT_NUMBER":
-          return state + 1
+          newNumber = state + 1
+          return (newNumber < 10) ? `00${newNumber}` : newNumber
           break;
         case "DECREMENT_NUMBER":
-          return state - 1
+          newNumber = state - 1
+          return (newNumber < 10) ? `00${newNumber}` : newNumber
           break;
         default:
 
@@ -172,7 +180,7 @@
       let mainNumberElement = document.getElementById('main-number')
       let newNumber = changeNumbers(parseInt(mainNumberElement.innerHTML), { type: "DECREMENT_NUMBER"})
       mainNumberElement.innerHTML = newNumber
-      return snap();
+      return snap()
     }
 
     const snap = () => {
@@ -186,8 +194,26 @@
         copy.height = canvas.height
         copyCtx.filter = 'invert() grayscale(100%) brightness(2) contrast(1.2)'
         copyCtx.drawImage(originalImage, 0, 0)
-        return imagesDump.appendChild(copy)
+        imagesDump.appendChild(copy)
+        recognizeMainNumber(copy, canvas)
       })
+    }
+
+    const recognizeMainNumber = (source, original) => {
+      let mainNumber = document.createElement('canvas')
+      let mainNumberCtx = mainNumber.getContext('2d')
+      mainNumber.width = original.width
+      mainNumber.height = original.height
+      mainNumberCtx.drawImage(source, 70, 210, 260, 124, 21, 20, 220, 104)
+      document.body.appendChild(mainNumber)
+      Tesseract.recognize(mainNumber)
+        .then(re => renderOutput('Main number is', re.text))
+    }
+
+    const renderOutput = (message, number) => {
+      let loc = document.getElementById('output')
+      number = number.replace(/ +/g, "")
+      return loc.innerHTML = `${message} ${number}`
     }
 
   </script>
