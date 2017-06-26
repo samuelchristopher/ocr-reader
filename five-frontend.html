@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Frontend</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .livefeed {
+        background: gray;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        width: 40%;
+        margin-left: 10px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="livefeed">
+      <h2>Main number</h2>
+      <h1 class="main-number">...</h1>
+    </div>
+    <input type="number" name="user-number" value="" class="user-number-input" placeholder="What is your ticket number?">
+    <button type="button" onclick="trackNumber()" name="track-number">Track Number</button>
+    <p class="message">Your number is <span class="message__span">...</span> numbers away</p>
+  </body>
+  <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+  <script type="text/javascript">
+    // Initialize Firebase
+    let config = {
+      apiKey: "AIzaSyDszKCr1Dlbg3ha0ambLbzTgjp0yV9CPfk",
+      authDomain: "five-backend.firebaseapp.com",
+      databaseURL: "https://five-backend.firebaseio.com",
+      projectId: "five-backend",
+      storageBucket: "five-backend.appspot.com",
+      messagingSenderId: "229340236226"
+    };
+    firebase.initializeApp(config)
+    let dataRef = firebase.database().ref().child('data')
+    dataRef.on('value', snap => {
+      let data = snap.val()
+      let { mainNumber } = data
+      mainNumber = mainNumber.slice(0, -2)
+      let display = document.querySelector('.main-number')
+      display.innerHTML = mainNumber
+      return trackNumber()
+    })
+
+    const trackNumber = () => {
+      let mainNumber = document.querySelector('.main-number').innerHTML
+      let userNumber = document.querySelector('.user-number-input').value || mainNumber
+      let messageSpan = document.querySelector('.message__span')
+      let numbersAway = parseInt(userNumber) - parseInt(mainNumber)
+      return messageSpan.innerHTML = numbersAway
+    }
+  </script>
+</html>
