@@ -152,7 +152,19 @@
   </body>
   <script src="https://cdn.rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.min.js" charset="utf-8"></script>
   <script src='http://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
   <script type="text/javascript">
+    // Initialize Firebase
+    let config = {
+      apiKey: "AIzaSyDszKCr1Dlbg3ha0ambLbzTgjp0yV9CPfk",
+      authDomain: "five-backend.firebaseapp.com",
+      databaseURL: "https://five-backend.firebaseio.com",
+      projectId: "five-backend",
+      storageBucket: "five-backend.appspot.com",
+      messagingSenderId: "229340236226"
+    };
+    firebase.initializeApp(config)
+    let database = firebase.database()
     // change numbers
     const changeNumbers = (state = 000, action) => {
       let newNumber
@@ -210,9 +222,15 @@
 
     const renderOutput = (message, number) => {
       let loc = document.getElementById('output')
+      let dataRef = database.ref().child('data')
       number = number.replace(/ +/g, "")
+      dataRef.set({
+        mainNumber: number
+      })
       return loc.innerHTML = `${message} ${number}`
     }
+
+    // TODO: In database entry is like '003/n/n' try to remove /n/n
 
   </script>
 </html>
