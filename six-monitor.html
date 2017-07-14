@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Monitor Full</title>
+    <style>
+      .qms-monitor {
+        width: 5580px;
+        height: 3920px;
+        display: flex;
+        background: linear-gradient(#cfdef8, #6f9ce7);
+        color: white;
+        font-family: sans-serif;
+        flex-direction: column;
+        position: relative;
+        border: solid 1px black;
+      }
+
+      .qms-monitor__white-bar {
+        width: 100%;
+        height: 500px;
+        display: block;
+        position: absolute;
+        background: white;
+      }
+
+
+      .qms-monitor__secondary-number-container {
+        display: flex;
+        width: 100%;
+        margin-top: 450px;
+        justify-content: space-between;
+      }
+
+      .secondary-number-container {
+        background: #00ff00;
+        border-radius: 15px;
+        width: 1750px;
+        height: 1200px;
+        overflow: hidden;
+      }
+
+      h2.secondary-number-container__number {
+        font-size: 40em;
+        margin: 50px 0 0 0;
+        text-align: center;
+      }
+
+      .secondary-number-container__counter-info {
+        height: 500px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: -60px auto;
+        background: blue;
+        border-radius: 8px;
+      }
+
+      h4.counter-info__text {
+        margin: 50px 100px;
+        color: #00ffff;
+        font-size: 20em;
+      }
+
+      h3.counter-info__counter-number {
+        font-size: 20em;
+        margin: 50px 100px;
+        color: yellow;
+      }
+
+      .qms-monitor__main-number-container.main-number-container {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      h1.main-counter__counter-number {
+        height: 1600px;
+        width: 1600px;
+        background: white;
+        border-radius: 24px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        color: blue;
+        font-size: 80em;
+        margin: 0 100px 0 0;
+      }
+
+      h1.main-number-container__main-number {
+        font-size: 70em;
+        margin: 550px 0 0 770px;
+      }
+
+      .qms-monitor__main-number-container.main-number-container {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      h3.main-counter__text {
+        color: #1c4587;
+        text-align: center;
+        margin-right: 130px;
+        margin: 100px 60px 100px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="qms-monitor">
+      <div class="qms-monitor__white-bar"></div>
+      <div class="qms-monitor__secondary-number-container">
+        <div class="secondary-number-container">
+          <h2 id="first-number" class="secondary-number-container__number">012</h2>
+          <div class="secondary-number-container__counter-info">
+            <h4 class="counter-info__text">counter</h4>
+            <h3 class="counter-info__counter-number">3</h3>
+          </div>
+        </div>
+        <div class="secondary-number-container">
+          <h2 id="second-number" class="secondary-number-container__number">001</h2>
+          <div class="secondary-number-container__counter-info">
+            <h4 class="counter-info__text">counter</h4>
+            <h3 class="counter-info__counter-number">5</h3>
+          </div>
+        </div>
+        <div class="secondary-number-container">
+          <h2 id="third-number" class="secondary-number-container__number">078</h2>
+          <div class="secondary-number-container__counter-info">
+            <h4 class="counter-info__text">counter</h4>
+            <h3 class="counter-info__counter-number">6</h3>
+          </div>
+        </div>
+      </div>
+      <div class="qms-monitor__main-number-container main-number-container">
+        <h1 id="main-number" class="main-number-container__main-number">002</h1>
+        <div class="main-number-container__main-counter main-counter">
+          <h3 class="main-counter__text">Counter</h3>
+          <h1 class="main-counter__counter-number">3</h1>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" name="increment-number" onclick="inc()">+ 1</button>
+    <button type="button" name="decrement-number" onclick="dec()">- 1</button>
+  </body>
+  <script>
+    let mainNumber = document.querySelector('#main-number')
+    const inc = () => {
+      let newNumber = parseInt(mainNumber.innerHTML) + 1
+      return mainNumber.innerHTML = (newNumber < 10) ? `00${newNumber}` : newNumber
+    }
+    const dec = () => {
+      let newNumber = parseInt(mainNumber.innerHTML) - 1
+      return mainNumber.innerHTML = (newNumber < 10) ? `00${newNumber}` : newNumber
+    }
+  </script>
+</html>
